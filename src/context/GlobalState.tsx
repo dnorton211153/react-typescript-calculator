@@ -7,8 +7,7 @@ const SETOPERATOR = "SETOPERATOR";
 const CALCULATE = "CALCULATE";
 const APPEND = "APPEND";
 
-// Initial state (customers would need to be loaded from the DB source)
-
+// TypeScript requires stubs for the functions as well
 const initialState = {
     displayValue: "0",
     storedValue: "",
@@ -17,9 +16,9 @@ const initialState = {
     readyForNewNumber: true,
     lastAction: CLEAR,
     actionClear: () => {},
-    actionSetOperator: (payload: any) => {},
-    actionCalculate: (payload: any) => {},
-    actionAppend: (payload: any) => {}
+    actionCalculate: () => {},
+    actionSetOperator: (payload: string) => {},
+    actionAppend: (payload: string) => {}
 };
 
 // Create context:
@@ -30,36 +29,28 @@ export const GlobalProvider = ({ children }: {children: any}) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
 
     // global actions (calls to reducer):
-
     const actionClear = () => {
         dispatch({
             type: CLEAR,
-            payload: {
-                displayValue: "0",
-                storedValue: "",
-                lastStoredValue: "",
-                operator: "",
-                readyForNewNumber: true,
-                lastAction: CLEAR, 
-            }
+            payload: ''
         })
     }
     
-    const actionSetOperator = (payload: any) => {
+    const actionSetOperator = (payload: string) => {
         dispatch({
             type: SETOPERATOR,
             payload: payload
         })
     }
     
-    const actionCalculate = (payload: any) => {
+    const actionCalculate = () => {
         dispatch({
             type: CALCULATE,
-            payload: payload
+            payload: ''
         })
     }
     
-    const actionAppend = (payload: any) => {
+    const actionAppend = (payload: string) => {
         dispatch({
             type: APPEND,
             payload: payload
@@ -77,7 +68,6 @@ export const GlobalProvider = ({ children }: {children: any}) => {
         actionSetOperator,
         actionCalculate,
         actionAppend
-
     }}>
         {children}
     </GlobalContext.Provider>);

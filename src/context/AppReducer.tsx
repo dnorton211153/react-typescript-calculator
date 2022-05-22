@@ -10,7 +10,7 @@ const SUBTRACT = "-";
 const MULTIPY = "*";
 const DIVIDE = "/";
 
-export default (
+const AppReducer = (
   state: {
     storedValue: string;
     displayValue: string;
@@ -19,11 +19,19 @@ export default (
     lastStoredValue: string;
     lastAction: string;
   },
-  { type, payload }: {type: any, payload: any}
+  { type, payload }: { type: string; payload: string }
 ) => {
   switch (type) {
     case CLEAR:
-      return { ...state, ...payload };
+      return {
+        ...state,
+        displayValue: "0",
+        storedValue: "",
+        lastStoredValue: "",
+        operator: "",
+        readyForNewNumber: true,
+        lastAction: CLEAR,
+      };
 
     case SETOPERATOR:
       return {
@@ -32,12 +40,13 @@ export default (
         lastStoredValue: state.storedValue,
         storedValue: state.displayValue,
         readyForNewNumber: true,
-        lastAction: SETOPERATOR,
+        lastAction: SETOPERATOR
       };
 
     case APPEND:
-      if (state.displayValue.includes(".") && payload == ".") return state;
-      if (state.displayValue.slice(0, 1) == "0" && payload == "0") return state;
+      if (state.displayValue.includes(".") && payload === ".") return state;
+      if (state.displayValue.slice(0, 1) === "0" && payload === "0")
+        return state;
 
       if (state.readyForNewNumber) {
         return {
@@ -55,21 +64,21 @@ export default (
       }
 
     case CALCULATE:
-      if (state.operator != "") {
+      if (state.operator !== "") {
         var newTotal;
 
         switch (state.operator) {
           case ADD:
-            newTotal = Number(state.storedValue) + Number(payload);
+            newTotal = Number(state.storedValue) + Number(state.displayValue);
             break;
           case SUBTRACT:
-            newTotal = Number(state.storedValue) - Number(payload);
+            newTotal = Number(state.storedValue) - Number(state.displayValue);
             break;
           case MULTIPY:
-            newTotal = Number(state.storedValue) * Number(payload);
+            newTotal = Number(state.storedValue) * Number(state.displayValue);
             break;
           case DIVIDE:
-            newTotal = Number(state.storedValue) / Number(payload);
+            newTotal = Number(state.storedValue) / Number(state.displayValue);
             break;
         }
 
@@ -89,3 +98,5 @@ export default (
       return state;
   }
 };
+
+export default AppReducer;

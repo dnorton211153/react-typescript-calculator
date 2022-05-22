@@ -1,29 +1,19 @@
-import React, {useContext} from 'react';
+import React, {useContext, MouseEvent} from 'react';
 import { GlobalContext } from '../context/GlobalState';
 
 
 export const Calculator = () => {
 
-    // // Available from globalState context:
-    // displayValue: state.displayValue,
-    // lastStoredValue: state.lastStoredValue,
-    // storedValue: state.storedValue,
-    // operator: state.operator,
-    // lastAction: state.lastAction,
-    // readyForNewNumber: state.readyForNewNumber,
-    // actionClear,
-    // actionSetOperator,
-    // actionCalculate,
-    // actionAppend
-
-  const {displayValue,lastAction,storedValue,operator,lastStoredValue,readyForNewNumber,actionClear,actionSetOperator,actionAppend,actionCalculate} = useContext(GlobalContext);
+  // Use the global context:
+  const {displayValue,lastAction,storedValue,operator,actionClear,actionSetOperator,actionAppend,actionCalculate} = useContext(GlobalContext);
   
-  const append = (e: any) => {
+  // Helper functions to wrap around the actionFunctions:
+  const append = (e: MouseEvent) => {
         let target = e.target as HTMLTextAreaElement;
         actionAppend(target.innerText)
   }
 
-  const setOperator = (e: any) => {
+  const setOperator = (e: MouseEvent) => {
     if (lastAction !== 'SETOPERATOR') {
         if (storedValue !== '' && operator !== '') calculate();
     }
@@ -32,7 +22,7 @@ export const Calculator = () => {
   }
 
   const calculate = () => {
-      actionCalculate(displayValue);
+      actionCalculate();
   }
 
   return (
