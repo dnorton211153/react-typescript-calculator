@@ -1,3 +1,5 @@
+import NP from 'number-precision'
+
 // ACTIONS
 const CLEAR = "CLEAR";
 const SETOPERATOR = "SETOPERATOR";
@@ -9,6 +11,7 @@ const ADD = "+";
 const SUBTRACT = "-";
 const MULTIPY = "*";
 const DIVIDE = "/";
+
 
 const AppReducer = (
   state: {
@@ -56,16 +59,18 @@ const AppReducer = (
           lastAction: APPEND,
         };
       } else {
+
+        let newDisplayValue = state.displayValue + payload;
         return {
           ...state,
-          displayValue: (state.displayValue += payload),
+          displayValue: newDisplayValue,
           lastAction: APPEND,
         };
       }
 
     case CALCULATE:
       if (state.operator !== "") {
-        var newTotal;
+        var newTotal = 0;
 
         switch (state.operator) {
           case ADD:
@@ -84,9 +89,9 @@ const AppReducer = (
 
         return {
           ...state,
-          displayValue: String(newTotal),
+          displayValue: String(NP.strip(newTotal)),
           lastStoredValue: state.storedValue,
-          storedValue: String(newTotal),
+          storedValue: String(NP.strip(newTotal)),
           operator: "",
           lastAction: CALCULATE,
         };
